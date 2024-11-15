@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 200px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .edit-button {
+            background-color: yellow;
+            color: black;
+        }
+        .delete-button {
+            background-color: red;
+            color: white;
+        }
+        button:hover {
+            opacity: 0.8; /* Slightly transparent on hover */
+        }
+        #showStudents {
+            margin-top: 20px;
+        }
+        .student-item {
+            background: white;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .student-item p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Student Management System</h1>
+    <input type="text" id="studentInput" placeholder="Enter student name">
+    <button onclick="addStudent()">Submit</button>
+    <div id="showStudents"></div>
+    
+    <script>
+        var allStudents = [];
+
+        function addStudent() {
+            var studentInput = document.getElementById("studentInput").value;
+            if (studentInput) {
+                allStudents.push(studentInput);
+                console.log("Added student:", studentInput);
+                document.getElementById("studentInput").value = ""; // Clear input
+                showStudents(allStudents);
+            } else {
+                console.log("No student name entered.");
+            }
+        }
+
+        function deleteItems(index) {
+            console.log("Attempting to delete student at index:", index);
+            var confirmDelete = confirm("Are you sure you want to delete?");
+            if (confirmDelete) {
+                var deletedStudent = allStudents[index];
+                allStudents.splice(index, 1);
+                console.log("Deleted student:", deletedStudent);
+                showStudents(allStudents);
+            } else {
+                console.log("Deletion canceled.");
+            }
+        }
+
+        function editStudent(index) {
+            var currentStudentName = allStudents[index];
+            var newStudentName = prompt("Edit student name:", currentStudentName);
+            if (newStudentName) {
+                console.log("Changed student from:", currentStudentName, "to:", newStudentName);
+                allStudents[index] = newStudentName;
+                showStudents(allStudents);
+            } else {
+                console.log("No change made to student name.");
+            }
+        }
+
+        function showStudents(students) {
+            var display = document.getElementById("showStudents");
+            display.innerHTML = "";
+            for (var i = 0; i < students.length; i++) {
+                display.innerHTML += `
+                    <div class="student-item">
+                        <p>${i + 1}. ${students[i]}</p>
+                        <div>
+                            <button class="edit-button" onclick="editStudent(${i})">Edit</button>
+                            <button class="delete-button" onclick="deleteItems(${i})">Delete</button>
+                        </div>
+                    </div>
+                `;
+            }
+            console.log("Displayed students:", students);
+        }
+    </script>
+</body>
+</html>
